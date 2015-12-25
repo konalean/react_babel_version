@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Coding a Clean and Professional Web Design in Photoshop</title>
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<span id="react-root"></span>
+<script src="react.js"></script>
+<script src="react-dom.js"></script>
+<script src="browser.min.js"></script>
+
+<script type="text/babel">
+    var Container = React.createClass({
+        getInitialState: function() {
+            return {tabData: this.props.tabData, 
+                    titleData: this.props.titleData, 
+                    contentBoxes: this.props.contentBoxes};
+        },
+        tabAdd: function(evt) {
+            console.log(evt);
+            this.state.tabData.push({title: 'ABOUT', url: 'http://www.kimo.com.tw/'});
+            this.setState({tabData: this.state.tabData});
+        },
+
+        handleClick: function(evt) {
+            this.state.tabData.push({title: 'ABOUT', url: 'http://www.kimo.com.tw/'});
+            this.setState({tabData: this.state.tabData});
+        },
+
+        render: function() {
+            return  <div id="container">
+                        <Header data={this.state.titleData} />
+                        <TabSelector tabData={this.state.tabData} />
+                        <div id="featured">
+                            <MainPic />
+                            <MainForm />
+                        </div>
+                        <div id="content">
+                            <ContentBox contentBoxes={this.state.contentBoxes} onClick={this.tabAdd} />
+                        </div>
+                    </div>;
+        }
+    });
+
+    var Header = React.createClass({
+        render: function() {
+            return  <div id="header">
+                        <h1><a href="#">Smashing Dzine</a></h1>
+                        <div id="phone">
+                            <p>{this.props.data.tel}</p>
+                            <h6>{this.props.data.desc}</h6>
+                        </div>
+                    </div>;
+        }
+    });
+
+    var TabSelector = React.createClass({
+        render: function() {
+            var tabs = this.props.tabData.map(function(item, i) {
+                var cssName = item.cssName != undefined ? item.cssName : '';
+                return <li className={item.cssName} key={i}><a href={item.url}><span>{item.title}</span></a></li>;
+                
+            }, this);
+            
+            return <div id="nav"><ul>{tabs}</ul></div>;
+        }
+    });
+
+    var MainPic = React.createClass({
+        render: function() {
+            return <ul>
+                      <li className="ss1"><a href="#">Heading for Project</a></li>
+                    </ul>;
+        }
+    }); 
+
+    var MainForm = React.createClass({
+        render: function() {
+            return <form id="quote" action="#" method="post">
+                      <h2>Quick Quote</h2>
+                        <label>Your Full Name:</label>
+                        <input type="text" name="Full Name" />
+                        <label>Your Email:</label>
+                        <input type="text" name="Email" />
+                        <label>What Are You Looking For:</label>
+                        <textarea cols="35" rows="2"></textarea>
+                        <input className="btn" type="image" src="images/submit_btn.jpg" />
+                </form>;
+        }
+    });
+
+    var ContentBox = React.createClass({
+        render: function() {
+            var boxes = this.props.contentBoxes.map(function(item, i) {
+                return  <div className={item.cssClass} key={i}>
+                          <h2  onClick={this.props.onClick}>{item.title}</h2>
+                          <img src={item.img} alt="About Smashing Dzine" />
+                          <p>{item.desc}</p>
+                          <a href={item.url} className="readmore">Read More</a> 
+                        </div>
+            }, this);
+
+            return <div>{boxes}</div>;
+        }
+    });
+
+    var tabData = [
+        {title: 'HOME', url: 'http://www.kimo.com.tw/', cssName: "active"},
+        {title: 'ABOUT', url: 'http://www.kimo.com.tw/'},
+        {title: 'SERVICES', url: 'http://www.kimo.com.tw/'},
+        {title: 'PRODUCTS', url: 'http://www.kimo.com.tw/'},
+        {title: 'BLOG', url: 'http://www.kimo.com.tw/'},
+        {title: 'CONTACT US', url: 'http://www.kimo.com.tw/'}
+    ];
+
+    var titleData = {tel: '2654564878978989', desc: 'call'};
+    var contentBoxes = [
+        {title: 'Click Me Add Tab', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col'},
+        {title: 'About SmashingDzine', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col noMargin'},
+        {title: 'About SmashingDzine', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col no Margin fr'}
+    ];
+
+    // var tabFactory = React.createFactory(TabSelector);
+    // var tabs = tabFactory({tabData: tabData});
+    ReactDOM.render(
+        <Container titleData={titleData} tabData={tabData} contentBoxes={contentBoxes} />,
+         document.getElementById("react-root")
+    );
+
+</script>
+</body>
+
+</html>
